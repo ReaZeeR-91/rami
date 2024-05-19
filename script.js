@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startScreen = document.getElementById('startScreen');
     const waitingScreen = document.getElementById('waitingScreen');
     const gameContainer = document.getElementById('gameContainer');
-    const socket = new WebSocket('wss://rami_jeux.onrender.com');
-
+    let socket;
 
     nameForm.addEventListener('submit', (event) => {
         event.preventDefault();
