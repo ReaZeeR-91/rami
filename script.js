@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'none';
         waitingScreen.style.display = 'block';
 
-        // Se connecter au serveur WebSocket
-        socket = new WebSocket('ws://localhost:8080');
+        // Se connecter au serveur WebSocket sur Render
+        socket = new WebSocket('wss://rami_jeux.onrender.com'); // Remplacez 'nom-de-ton-app' par le nom de votre application Render
 
         socket.onopen = () => {
             console.log('Connecté au serveur WebSocket');
