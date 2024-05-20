@@ -17,10 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         waitingScreen.style.display = 'block';
 
         // Se connecter au serveur WebSocket sur Render
-        socket = new WebSocket('https://rami-jeux.onrender.com/'); // Remplacez 'nom-de-ton-app' par le nom de votre application Render
+        socket = new WebSocket('wss://rami-jeux.onrender.com'); // Remplacez 'nom-de-ton-app' par le nom de votre application Render
 
         socket.onopen = () => {
             console.log('Connecté au serveur WebSocket');
+            socket.send(JSON.stringify({ type: 'name', name: playerName }));
         };
 
         socket.onmessage = (event) => {
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Commence le jeu quand les deux joueurs sont connectés
                 waitingScreen.style.display = 'none';
                 gameContainer.style.display = 'block';
-                initializeGame(socket, message.player);
+                initializeGame(socket, message.player, message.opponent);
             } else if (message.type === 'update') {
                 // Gère les mises à jour du jeu (par exemple, mouvements de cartes)
                 updateGame(message.data);
@@ -37,15 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    function initializeGame(socket, playerNumber) {
+    function initializeGame(socket, playerNumber, opponentName) {
         const playerName = localStorage.getItem('playerName');
-        document.getElementById('playerGreeting').textContent = `Bienvenue ${playerName}, vous êtes le joueur ${playerNumber}. Le jeu commence !`;
+        document.getElementById('playerGreeting').textContent = `Bienvenue ${playerName}, vous êtes le joueur ${playerNumber}. Le jeu commence ! Vous êtes contre ${opponentName}.`;
 
         const cardArea = document.getElementById('cardArea');
         cardArea.innerHTML = ''; // Vide le conteneur des cartes
 
         // Création de quelques cartes pour l'exemple
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 6; i++) {
             const card = document.createElement('div');
             card.className = 'card';
             card.textContent = i; // Contenu de la carte
